@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>InstaTeam</title>
+        <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/site.css">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="site-header">
+                    <a class="logo" href="index.html">InstaTeam</a>
+                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
+                </div>
+            </div>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index">Projects</a></li>
+                <li><a href="collaborators">Collaborators</a></li>
+                <li class="selected"><a href="roles">Roles</a></li>
+            </ul>
+        </nav>
+        <section>
+            <div class="container wrapper">
+                <form th:action="@{/roles}" method="post" th:object="${role}" id="roles">
+                    <input type="hidden" th:field="*{id}"/>
+                    <h2>Manage Roles</h2>
+                    <div>
+                        <ul class="checkbox-list">
+                            <li th:each="r : ${roles}" th:text="${r.name}"><span class="primary">Developer</span></li>
+                        </ul>
+                    </div>
+                    <div class="actions add-new-role">
+                        <input type="text" placeholder="New Role..." th:field="*{name}">
+                        <a href="#" class="button" onclick="document.getElementById('roles').submit();return false">Add</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>
