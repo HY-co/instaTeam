@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -20,27 +20,23 @@
         </header>
         <nav>
             <ul>
-                <li><a href="index.html">Projects</a></li>
-                <li><a href="collaborators.html">Collaborators</a></li>
-                <li class="selected"><a href="roles.html">Roles</a></li>
+                <li><a href="index">Projects</a></li>
+                <li><a href="collaborators">Collaborators</a></li>
+                <li class="selected"><a href="roles">Roles</a></li>
             </ul>
         </nav>
         <section>
             <div class="container wrapper">
-                <form>
+                <form th:action="@{/roles}" method="post" th:object="${role}">
                     <h2>Manage Roles</h2>
                     <div>
                         <ul class="checkbox-list">
-                            <li><span class="primary">Developer</span></li>
-                            <li><span class="primary">Designer</span></li>
-                            <li><span class="primary">QA</span></li>
-                            <li><span class="primary">DevOps</span></li>
-                            <li><span class="primary">Copywriter</span></li>
+                            <li th:each="r : ${roles}" th:text="${r.name}"><span class="primary">Developer</span></li>
                         </ul>
                     </div>
                     <div class="actions add-new-role">
-                        <input type="text" placeholder="New Role...">
-                        <a class="button" href="#">Add</a>
+                        <input type="text" placeholder="New Role..." th:field="*{name}">
+                        <a class="button" href="#" type="submit">Add</a>
                     </div>
                 </form>
             </div>

@@ -14,11 +14,16 @@ public class ProjectController {
   private ProjectService projectService;
 
   // index page
-  @RequestMapping("/")
+  @RequestMapping("/index")
   public String lsitProjects(Model model) {
     List<Project> projects = projectService.findAll();
 
     model.addAttribute("projects", projects);
     return "index";
+  }
+
+  @RequestMapping("/")
+  public String home() {
+    return "redirect:/index";
   }
 }
