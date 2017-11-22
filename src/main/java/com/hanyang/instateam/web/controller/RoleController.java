@@ -28,6 +28,7 @@ public class RoleController {
 
   @RequestMapping(value = "/roles", method = RequestMethod.POST)
   public String addRole(@Valid Role role, BindingResult result, RedirectAttributes redirectAttributes) {
+    //System.out.println(role.getName());
     if (result.hasErrors()) {
       //System.out.println("enter");
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.category", result);

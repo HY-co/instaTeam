@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CollaboratorServiceImpl implements CollaboratorDao {
+public class CollaboratorServiceImpl implements CollaboratorService {
   @Autowired
   private CollaboratorDao collaboratorDao;
 
