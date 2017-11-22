@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a7e8ffe1-bc84-40e7-933c-1b15b4ed3f16" name="Default" comment="Add &quot;add&quot; function for &quot;roles&quot;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a7e8ffe1-bc84-40e7-933c-1b15b4ed3f16" name="Default" comment="Add &quot;add&quot; function for &quot;roles&quot;" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
