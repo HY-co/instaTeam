@@ -30,18 +30,27 @@ public class ProjectDaoImpl implements ProjectDao {
   public Project findById(Long id) {
     Session session = sessionFactory.openSession();
     Project project = session.get(Project.class, id);
-//    Hibernate.initialize(project.getCollaborators());
+    Hibernate.initialize(project.getCollaborators());
+    Hibernate.initialize(project.getRolesNeeded());
     session.close();
     return project;
   }
 
   @Override
   public void save(Project project) {
-
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    session.saveOrUpdate(project);
+    session.getTransaction().commit();
+    session.close();
   }
 
   @Override
   public void delete(Project project) {
-
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    session.delete(project);
+    session.getTransaction().commit();
+    session.close();
   }
 }
