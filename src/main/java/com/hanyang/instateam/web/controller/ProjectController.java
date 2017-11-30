@@ -5,6 +5,7 @@ import com.hanyang.instateam.model.Project;
 import com.hanyang.instateam.model.Role;
 import com.hanyang.instateam.service.ProjectService;
 import com.hanyang.instateam.service.RoleService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -53,10 +55,9 @@ public class ProjectController {
 
   @RequestMapping("/edit/{projectId}")
   public String formEditProject(@PathVariable Long projectId, Model model) {
-    if (!model.containsAttribute("project")) {
-      model.addAttribute("project", new Project());
-    }
+    Project project = projectService.findById(projectId);
 
+    model.addAttribute("project", project);
     model.addAttribute("action", String.format("/project/%s", projectId));
     model.addAttribute("submit", "Save");
     model.addAttribute("roles", roleService.findAll());
@@ -65,8 +66,9 @@ public class ProjectController {
   }
 
   @RequestMapping(value = "/index", method = RequestMethod.POST)
-  public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) {
+  public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes, @RequestParam("project_roles") List<Long> ids) {
     if (result.hasErrors()) {
+      System.out.println("error");
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
 
       redirectAttributes.addFlashAttribute("project", project);
@@ -74,7 +76,13 @@ public class ProjectController {
       return "redirect:/addproject";
     }
 
-    System.out.println("success");
+    //System.out.println("success");
+    List<Role> roles = new ArrayList<>();
+    for (Long id : ids) {
+      roles.add(roleService.findById(id));
+    }
+    project.setRolesNeeded(roles);
+
     projectService.save(project);
 
     return "redirect:/index";
