@@ -3,6 +3,7 @@ package com.hanyang.instateam.web.controller;
 import com.hanyang.instateam.model.Collaborator;
 import com.hanyang.instateam.model.Project;
 import com.hanyang.instateam.model.Role;
+import com.hanyang.instateam.service.CollaboratorService;
 import com.hanyang.instateam.service.ProjectService;
 import com.hanyang.instateam.service.RoleService;
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class ProjectController {
 
   @Autowired
   private RoleService roleService;
+
+  @Autowired
+  private CollaboratorService collaboratorService;
 
   // index page
   @RequestMapping("/index")
@@ -63,6 +67,34 @@ public class ProjectController {
     model.addAttribute("roles", roleService.findAll());
 
     return "edit_project";
+  }
+
+  @RequestMapping("project_collaborators/{projectId}")
+  public String formEditCollaborator(@PathVariable Long projectId, Model model) {
+    Project project = projectService.findById(projectId);
+    List<Role> roles = project.getRolesNeeded();
+
+    model.addAttribute("project", project);
+    model.addAttribute("roles", roles);
+    for (Role role : roles) {
+      model.addAttribute(role.getId().toString(), collaboratorService.findByRoleId(role.getId()));
+    }
+    return "project_collaborators";
+  }
+
+  @RequestMapping(value = "edit_collaborator/{projectId}", method = RequestMethod.POST)
+  public String editCollaborator(@PathVariable Long projectId, @RequestParam("projectCollaborators") List<Long> collaboratorId) {
+    Project project = projectService.findById(projectId);
+    List<Collaborator> collaborators = new ArrayList<>();
+
+    for (Long id : collaboratorId) {
+      collaborators.add(collaboratorService.findById(id));
+    }
+
+    project.setCollaborators(collaborators);
+    projectService.save(project);
+
+    return String.format("redirect:/detail/%s", projectId);
   }
 
   @RequestMapping(value = "/index", method = RequestMethod.POST)
@@ -106,11 +138,11 @@ public class ProjectController {
   @RequestMapping("/detail/{projectId}")
   public String projectDetail(@PathVariable Long projectId, Model model) {
     Project project = projectService.findById(projectId);
-    List<Role> roles = project.getRolesNeeded();
+    //List<Role> roles = project.getRolesNeeded();
     List<Collaborator> collaborators = project.getCollaborators();
 
     model.addAttribute("project", project);
-    model.addAttribute("roles", roles);
+    //model.addAttribute("roles", roles);
     model.addAttribute("collaborators", collaborators);
     return "project_detail";
   }

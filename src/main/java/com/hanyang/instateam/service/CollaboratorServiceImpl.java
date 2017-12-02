@@ -23,6 +23,11 @@ public class CollaboratorServiceImpl implements CollaboratorService {
   }
 
   @Override
+  public List<Collaborator> findByRoleId(Long roleId) {
+    return collaboratorDao.findByRoleId(roleId);
+  }
+
+  @Override
   public void save(Collaborator collaborator) {
     collaboratorDao.save(collaborator);
   }

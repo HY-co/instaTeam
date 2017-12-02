@@ -13,16 +13,16 @@
         <header>
             <div class="container">
                 <div class="site-header">
-                    <a class="logo" href="index.html">InstaTeam</a>
-                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
+                    <a class="logo" th:href="@{/index}">InstaTeam</a>
+                    <a class="new-project button icon-left" th:href="@{/addproject}"><i class="material-icons">add</i> New Project</a>
                 </div>
             </div>
         </header>
         <nav>
             <ul>
-                <li class="selected"><a href="index.html">Projects</a></li>
-                <li><a href="collaborators.html">Collaborators</a></li>
-                <li><a href="roles.html">Roles</a></li>
+                <li class="selected"><a href="index">Projects</a></li>
+                <li><a href="collaborators">Collaborators</a></li>
+                <li><a href="roles">Roles</a></li>
             </ul>
         </nav>
         <section>
@@ -35,8 +35,8 @@
                     </div>
                     <div class="roles-collaborators">
                         <h3>Roles &amp; Collaborators</h3>
-                        <div class="list-item" th:each="role : ${roles}" th:each="collaborator : ${collaborators}">
-                            <span class="primary" th:text="${role.name}">Developer</span>
+                        <div class="list-item" th:each="collaborator : ${collaborators}">
+                            <span class="primary" th:text="${collaborator.role.name}">Developer</span>
                             <span class="secondary" th:text="${collaborator.name}">Michael Pemulis</span>
                         </div>
                         <!--<div class="list-item">-->

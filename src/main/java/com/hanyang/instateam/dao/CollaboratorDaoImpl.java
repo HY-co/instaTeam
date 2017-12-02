@@ -2,6 +2,7 @@ package com.hanyang.instateam.dao;
 
 import com.hanyang.instateam.model.Collaborator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
@@ -49,5 +50,13 @@ public class CollaboratorDaoImpl implements CollaboratorDao {
     session.delete(collaborator);
     session.getTransaction().commit();
     session.close();
+  }
+
+  @Override
+  public List<Collaborator> findByRoleId(Long roldId) {
+    List<Collaborator> collaborators = findAll();
+    return collaborators.stream()
+                        .filter(c -> c.getRole().getId() == roldId)
+                        .collect(Collectors.toList());
   }
 }
