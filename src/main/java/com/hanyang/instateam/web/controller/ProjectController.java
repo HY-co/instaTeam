@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,9 +77,7 @@ public class ProjectController {
 
     model.addAttribute("project", project);
     model.addAttribute("roles", roles);
-    for (Role role : roles) {
-      model.addAttribute(role.getId().toString(), collaboratorService.findByRoleId(role.getId()));
-    }
+    model.addAttribute("collaboratorService", collaboratorService);
     return "project_collaborators";
   }
 

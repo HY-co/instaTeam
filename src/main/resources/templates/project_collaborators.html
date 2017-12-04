@@ -30,11 +30,11 @@
                 <form th:action="@{/edit_collaborators/${project.id}}" method="post">
                     <label>Edit Collaborators: Website Project</label>
                     <ul class="checkbox-list">
-                        <li th:each="role : ${project.rolesNeeded}" th:with="roleId=${role.id.toString()}"><span class="primary" th:text="${role.name}">Developer</span>
+                        <li th:each="role : ${project.rolesNeeded}" th:with="roleId=${role.id}"><span class="primary" th:text="${role.name}">Developer</span>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select name="projectCollaborators">
-                                    <option th:each="collaborator : (context.getVariable(roleId))" th:value="${collaborator.id}" th:text="${collaborator.name}">Michael Pemulis</option>
+                                    <option th:each="collaborator : ${collaboratorService.findByRoleId(roleId)}" th:value="${collaborator.id}" th:text="${collaborator.name}">Michael Pemulis</option>
                                     <option value="#">Name</option>
                                 </select>
                             </div>

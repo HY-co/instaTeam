@@ -8,6 +8,8 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
+import java.util.List;
+
 @Configuration
 public class TemplateConfig {
   @Autowired
