@@ -74,20 +74,28 @@ public class ProjectController {
   public String formEditCollaborator(@PathVariable Long projectId, Model model) {
     Project project = projectService.findById(projectId);
     List<Role> roles = project.getRolesNeeded();
+    List<Collaborator> collaborators = project.getCollaborators();
+    List<Long> collaboratorsId = new ArrayList<>();
+    for (Collaborator collaborator : collaborators) {
+      collaboratorsId.add(collaborator.getId());
+    }
 
     model.addAttribute("project", project);
     model.addAttribute("roles", roles);
+    model.addAttribute("collaboratorsId", collaboratorsId);
     model.addAttribute("collaboratorService", collaboratorService);
     return "project_collaborators";
   }
 
-  @RequestMapping(value = "edit_collaborator/{projectId}", method = RequestMethod.POST)
+  @RequestMapping(value = "/edit_collaborators/{projectId}", method = RequestMethod.POST)
   public String editCollaborator(@PathVariable Long projectId, @RequestParam("projectCollaborators") List<Long> collaboratorId) {
     Project project = projectService.findById(projectId);
     List<Collaborator> collaborators = new ArrayList<>();
 
-    for (Long id : collaboratorId) {
-      collaborators.add(collaboratorService.findById(id));
+    if (collaboratorId != null) {
+      for (Long id : collaboratorId) {
+        if (id != null) collaborators.add(collaboratorService.findById(id));
+      }
     }
 
     project.setCollaborators(collaborators);
@@ -97,7 +105,7 @@ public class ProjectController {
   }
 
   @RequestMapping(value = "/index", method = RequestMethod.POST)
-  public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes, @RequestParam("project_roles") List<Long> ids) {
+  public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes, @RequestParam(value = "project_roles", required = false) List<Long> ids) {
     if (result.hasErrors()) {
       System.out.println("error");
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
@@ -107,10 +115,13 @@ public class ProjectController {
       return "redirect:/addproject";
     }
 
+    System.out.println("error");
     //System.out.println("success");
     List<Role> roles = new ArrayList<>();
-    for (Long id : ids) {
-      roles.add(roleService.findById(id));
+    if (ids != null) {
+      for (Long id : ids) {
+        roles.add(roleService.findById(id));
+      }
     }
     project.setRolesNeeded(roles);
 
@@ -120,7 +131,7 @@ public class ProjectController {
   }
 
   @RequestMapping(value = "/project/{projectId}", method = RequestMethod.POST)
-  public String editProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) {
+  public String editProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes, @RequestParam(value = "project_roles", required = false) List<Long> ids) {
     if (result.hasErrors()) {
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
 
@@ -128,6 +139,16 @@ public class ProjectController {
 
       return String.format("redirect:/edit/%s", project.getId());
     }
+
+    List<Role> roles = new ArrayList<>();
+
+    if (ids != null) {
+      for (Long id : ids) {
+        roles.add(roleService.findById(id));
+      }
+    }
+
+    project.setRolesNeeded(roles);
 
     projectService.save(project);
 
