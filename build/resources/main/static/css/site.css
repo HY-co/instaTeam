@@ -407,6 +407,20 @@ form .add-new-collaborator .button {
 	margin: 0;
 }
 
+.mybutton {
+    padding: 11px 13px;
+  	background: #55aa9d;
+  	border: 2px solid #55aa9d;
+  	border-radius: 5px;
+  	text-decoration: none;
+  	color: #FFF;
+  	font-size: 18px;
+  	margin: 0 10px 10px 0;
+  	float: right;
+  	bottom: 31px;
+  	left: 10px;
+  	position: relative;
+}
 
 
 

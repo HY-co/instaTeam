@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>InstaTeam</title>
+  <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/normalize.css}">
+  <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="site-header">
+      <a class="logo" href="index">InstaTeam</a>
+      <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
+    </div>
+  </div>
+</header>
+<nav>
+  <ul>
+    <li class="selected"><a th:href="@{/index}">Projects</a></li>
+    <li><a th:href="@{/collaborators}">Collaborators</a></li>
+    <li><a th:href="@{/roles}">Roles</a></li>
+  </ul>
+</nav>
+<section>
+  <div class="container wrapper">
+    <form th:action="@{|/editrole/${role.id}|}" method="post" th:object="${role}">
+      <input type="hidden" th:field="*{id}">
+      <div>
+        <label for="role_name"> Role Name:</label>
+        <input type="text" name="role_name" th:field="*{name}" th:value="${role.name}">
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+      </div>
+      <div class="actions">
+        <input type="submit" th:value="save" class="button">
+        <a href="/index" class="button button-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+</body>
+</html>
