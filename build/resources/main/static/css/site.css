@@ -419,7 +419,7 @@ form .add-new-collaborator .button {
   	float: right;
   	bottom: 31px;
   	left: 10px;
-  	position: relative;
+  	display: inline-block;
 }
 
 

@@ -38,8 +38,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-logging:1.5.2.RELEASE" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" name="Gradle: org.yaml:snakeyaml:1.17" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-validator:5.3.4.Final" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.7" level="project" />

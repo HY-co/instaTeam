@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Collaborator {
@@ -15,6 +16,7 @@ public class Collaborator {
   private Long id;
 
   @NotNull
+  @Size(min = 1)
   private String name;
 
   @NotNull

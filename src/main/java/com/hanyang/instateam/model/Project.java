@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Project {
@@ -20,6 +21,7 @@ public class Project {
   private String name;
 
   @NotNull
+  @Size(min = 1)
   private String description;
 
   @Pattern(regexp = "[0-9a-zA-Z]+")

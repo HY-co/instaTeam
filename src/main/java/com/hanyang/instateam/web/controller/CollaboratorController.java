@@ -1,6 +1,7 @@
 package com.hanyang.instateam.web.controller;
 
 import com.hanyang.instateam.model.Collaborator;
+import com.hanyang.instateam.model.Role;
 import com.hanyang.instateam.service.CollaboratorService;
 import com.hanyang.instateam.service.RoleService;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -31,16 +33,38 @@ public class CollaboratorController {
 
   @RequestMapping(value = "/addcollaborator", method = RequestMethod.POST)
   public String addCollaborator(@Valid Collaborator collaborator, BindingResult result, RedirectAttributes redirectAttributes) {
-    System.out.println(collaborator.getName() + (collaborator.getRole() == null ? "null" : "not null"));
+    System.out.println(collaborator.getId() + collaborator.getName());
     if (result.hasErrors()) {
-      System.out.println("Error");
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.collaborator", result);
       redirectAttributes.addFlashAttribute("collaborator", collaborator);
 
       return "redirect:/collaborators";
     }
 
-    System.out.println("No error");
+    collaboratorService.save(collaborator);
+    return "redirect:/collaborators";
+  }
+
+  @RequestMapping("/formEditCollaborator/{collaboratorId}")
+  public String formEditCollaborator(@PathVariable Long collaboratorId, Model model) {
+    Collaborator collaborator = collaboratorService.findById(collaboratorId);
+    List<Role> roles = roleService.findAll();
+
+    model.addAttribute("collaborator", collaborator);
+    model.addAttribute("roles", roles);
+
+    return "edit_collaborator";
+  }
+
+  @RequestMapping(value = "editCollaborator/{collaboratorId}")
+  public String editCollaborator(@Valid Collaborator collaborator, BindingResult result, RedirectAttributes redirectAttributes) {
+    if (result.hasErrors()) {
+      redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.collaborator", result);
+      redirectAttributes.addFlashAttribute("collaborator", collaborator);
+
+      return String.format("redirect:/formEditCollaborator/%s", collaborator.getId());
+    }
+
     collaboratorService.save(collaborator);
     return "redirect:/collaborators";
   }

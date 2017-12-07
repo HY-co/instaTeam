@@ -54,6 +54,7 @@ public class ProjectController {
     model.addAttribute("action", "/index");
     model.addAttribute("submit", "Add");
     model.addAttribute("roles", roleService.findAll());
+    model.addAttribute("roleId", null);
 
     return "edit_project";
   }
@@ -61,10 +62,16 @@ public class ProjectController {
   @RequestMapping("/edit/{projectId}")
   public String formEditProject(@PathVariable Long projectId, Model model) {
     Project project = projectService.findById(projectId);
+    List<Long> roleId = new ArrayList<>();
+    List<Role> rolesNeeded = project.getRolesNeeded();
+    for (Role role : rolesNeeded) {
+      roleId.add(role.getId());
+    }
 
     model.addAttribute("project", project);
     model.addAttribute("action", String.format("/project/%s", projectId));
     model.addAttribute("submit", "Save");
+    model.addAttribute("roleId", roleId);
     model.addAttribute("roles", roleService.findAll());
 
     return "edit_project";
@@ -88,8 +95,13 @@ public class ProjectController {
   }
 
   @RequestMapping(value = "/edit_collaborators/{projectId}", method = RequestMethod.POST)
-  public String editCollaborator(@PathVariable Long projectId, @RequestParam("projectCollaborators") List<Long> collaboratorId) {
-    Project project = projectService.findById(projectId);
+  public String editCollaborator(@Valid Project project, BindingResult result, @PathVariable Long projectId, @RequestParam("projectCollaborators") List<Long> collaboratorId, RedirectAttributes redirectAttributes) {
+    if (result.hasErrors()) {
+      redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
+      redirectAttributes.addFlashAttribute("project", project);
+
+      return String.format("redirect:/edit_collaborators/%s", projectId);
+    }
     List<Collaborator> collaborators = new ArrayList<>();
 
     if (collaboratorId != null) {
@@ -107,7 +119,6 @@ public class ProjectController {
   @RequestMapping(value = "/index", method = RequestMethod.POST)
   public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes, @RequestParam(value = "project_roles", required = false) List<Long> ids) {
     if (result.hasErrors()) {
-      System.out.println("error");
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
 
       redirectAttributes.addFlashAttribute("project", project);
@@ -115,8 +126,6 @@ public class ProjectController {
       return "redirect:/addproject";
     }
 
-    System.out.println("error");
-    //System.out.println("success");
     List<Role> roles = new ArrayList<>();
     if (ids != null) {
       for (Long id : ids) {

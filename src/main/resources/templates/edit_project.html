@@ -13,7 +13,7 @@
         <header>
             <div class="container">
                 <div class="site-header">
-                    <a class="logo" href="index">InstaTeam</a>
+                    <a class="logo" th:href="@{/index}">InstaTeam</a>
                     <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
                 </div>
             </div>
@@ -30,12 +30,12 @@
                 <form th:action="@{${action}}" method="post" th:object="${project}">
                     <input type="hidden" th:field="*{id}">
                     <div>
-                        <label for="project_name"> Project Name:</label>
+                        <label for="project_name"> Project Name(required):</label>
                         <input type="text" name="project_name" th:field="*{name}" th:value="${project.name}">
                         <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     </div>
                     <div>
-                        <label for="project_description">Project Description:</label>
+                        <label for="project_description">Project Description(required):</label>
                         <textarea rows="4" name="project_description" th:field="*{description}" th:value="${project.description}"></textarea>
                         <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                     </div>
@@ -54,7 +54,7 @@
                         <label for="project_roles">Project Roles:</label>
                         <ul class="checkbox-list">
                             <li th:each="role : ${roles}">
-                                <input type="checkbox" checked="${project.rolesNeeded.contains(role)}" name="project_roles" th:value="${role.id}">
+                                <input type="checkbox" th:if="${roleId != null}" th:checked="${roleId.contains(role.id)}" name="project_roles" th:value="${role.id}">
                                 <span class="primary" th:text="${role.name}"> Developer</span>
                             </li>
                             <!--<li>-->
