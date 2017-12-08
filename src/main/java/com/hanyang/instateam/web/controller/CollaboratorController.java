@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -31,9 +32,22 @@ public class CollaboratorController {
     return "collaborators";
   }
 
+  @RequestMapping(value = "/update-collaborator-role", method = RequestMethod.POST)
+  public String updateCollaborator(@RequestParam(value = "collaboratorRole", required = false) List<String> ids) {
+    System.out.println(ids == null ? "null" : "Not Null");
+    for (int i = 0; i < ids.size(); i++) {
+      String[] idStr = ids.get(i).split(",");
+      Collaborator collaborator = collaboratorService.findById(Long.valueOf(idStr[0]));
+      Role role = roleService.findById(Long.valueOf(idStr[1]));
+      collaborator.setRole(role);
+      collaboratorService.save(collaborator);
+    }
+
+    return "redirect:/collaborators";
+  }
+
   @RequestMapping(value = "/addcollaborator", method = RequestMethod.POST)
-  public String addCollaborator(@Valid Collaborator collaborator, BindingResult result, RedirectAttributes redirectAttributes) {
-    System.out.println(collaborator.getId() + collaborator.getName());
+  public String addCollaborator(@Valid Collaborator collaborator, BindingResult result, RedirectAttributes redirectAttributes){
     if (result.hasErrors()) {
       redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.collaborator", result);
       redirectAttributes.addFlashAttribute("collaborator", collaborator);
